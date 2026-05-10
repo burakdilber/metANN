@@ -1,0 +1,227 @@
+citHeader("To cite metANN in publications, please use:")
+
+bibentry(
+  bibtype = "Manual",
+  title = "metANN: Metaheuristic and Gradient-Based Training of Artificial Neural Networks",
+  author = c(
+    person("Burak", "Dilber"),
+    person("A. Firat", "Ozdemir")
+  ),
+  year = "2026",
+  note = paste("R package version", packageDescription("metANN")$Version),
+  url = "https://github.com/YOUR_GITHUB_USERNAME/metANN"
+)
+
+citHeader("References for implemented optimization algorithms and neural network components:")
+
+bibentry(
+  bibtype = "InProceedings",
+  title = "Particle Swarm Optimization",
+  author = c(
+    person("James", "Kennedy"),
+    person("Russell", "Eberhart")
+  ),
+  booktitle = "Proceedings of ICNN'95 - International Conference on Neural Networks",
+  year = "1995",
+  volume = "4",
+  pages = "1942--1948",
+  doi = "10.1109/ICNN.1995.488968"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Differential Evolution -- A Simple and Efficient Heuristic for Global Optimization over Continuous Spaces",
+  author = c(
+    person("Rainer", "Storn"),
+    person("Kenneth", "Price")
+  ),
+  journal = "Journal of Global Optimization",
+  year = "1997",
+  volume = "11",
+  pages = "341--359",
+  doi = "10.1023/A:1008202821328"
+)
+
+bibentry(
+  bibtype = "Book",
+  title = "Genetic Algorithms in Search, Optimization, and Machine Learning",
+  author = person("David E.", "Goldberg"),
+  publisher = "Addison-Wesley",
+  address = "Reading, MA",
+  year = "1989"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "A Powerful and Efficient Algorithm for Numerical Function Optimization: Artificial Bee Colony (ABC) Algorithm",
+  author = c(
+    person("Dervis", "Karaboga"),
+    person("Bahriye", "Basturk")
+  ),
+  journal = "Journal of Global Optimization",
+  year = "2007",
+  volume = "39",
+  pages = "459--471",
+  doi = "10.1007/s10898-007-9149-x"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Grey Wolf Optimizer",
+  author = c(
+    person("Seyedali", "Mirjalili"),
+    person("Seyed Mohammad", "Mirjalili"),
+    person("Andrew", "Lewis")
+  ),
+  journal = "Advances in Engineering Software",
+  year = "2014",
+  volume = "69",
+  pages = "46--61",
+  doi = "10.1016/j.advengsoft.2013.12.007"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "The Whale Optimization Algorithm",
+  author = c(
+    person("Seyedali", "Mirjalili"),
+    person("Andrew", "Lewis")
+  ),
+  journal = "Advances in Engineering Software",
+  year = "2016",
+  volume = "95",
+  pages = "51--67",
+  doi = "10.1016/j.advengsoft.2016.01.008"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Teaching-Learning-Based Optimization: A Novel Method for Constrained Mechanical Design Optimization Problems",
+  author = c(
+    person("R. V.", "Rao"),
+    person("V. J.", "Savsani"),
+    person("D. P.", "Vakharia")
+  ),
+  journal = "Computer-Aided Design",
+  year = "2011",
+  volume = "43",
+  pages = "303--315",
+  doi = "10.1016/j.cad.2010.12.015"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Secretary Bird Optimization Algorithm: A New Metaheuristic for Solving Global Optimization Problems",
+  author = c(
+    person("Youfa", "Fu"),
+    person("Dan", "Liu"),
+    person("Jiadui", "Chen"),
+    person("Ling", "He")
+  ),
+  journal = "Artificial Intelligence Review",
+  year = "2024",
+  volume = "57",
+  pages = "123",
+  doi = "10.1007/s10462-024-10729-y"
+)
+
+bibentry(
+  bibtype = "InProceedings",
+  title = "Adam: A Method for Stochastic Optimization",
+  author = c(
+    person("Diederik P.", "Kingma"),
+    person("Jimmy", "Ba")
+  ),
+  booktitle = "International Conference on Learning Representations",
+  year = "2015"
+)
+
+bibentry(
+  bibtype = "InProceedings",
+  title = "Rectified Linear Units Improve Restricted Boltzmann Machines",
+  author = c(
+    person("Vinod", "Nair"),
+    person("Geoffrey E.", "Hinton")
+  ),
+  booktitle = "Proceedings of the 27th International Conference on Machine Learning",
+  year = "2010",
+  pages = "807--814"
+)
+
+bibentry(
+  bibtype = "InCollection",
+  title = "Probabilistic Interpretation of Feedforward Classification Network Outputs, with Relationships to Statistical Pattern Recognition",
+  author = person("John S.", "Bridle"),
+  booktitle = "Neurocomputing: Algorithms, Architectures and Applications",
+  publisher = "Springer",
+  year = "1990",
+  pages = "227--236"
+)
+
+citHeader("References for metaheuristic-based neural network training:")
+
+bibentry(
+  bibtype = "InProceedings",
+  title = "Training Feedforward Neural Networks Using Genetic Algorithms",
+  author = c(
+    person("D. J.", "Montana"),
+    person("L.", "Davis")
+  ),
+  booktitle = "Proceedings of the 11th International Joint Conference on Artificial Intelligence",
+  year = "1989",
+  pages = "762--767"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Differential Evolution Training Algorithm for Feed-Forward Neural Networks",
+  author = c(
+    person("J.", "Ilonen"),
+    person("J.-K.", "Kamarainen"),
+    person("J.", "Lampinen")
+  ),
+  journal = "Neural Processing Letters",
+  year = "2003",
+  volume = "17",
+  pages = "93--105",
+  doi = "10.1023/A:1022995128597"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "Neural Networks Training by Artificial Bee Colony Algorithm on Pattern Classification",
+  author = c(
+    person("D.", "Karaboga"),
+    person("C.", "Ozturk")
+  ),
+  journal = "Neural Network World",
+  year = "2009",
+  volume = "19",
+  number = "3",
+  pages = "279--292"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "How Effective is the Grey Wolf Optimizer in Training Multi-Layer Perceptrons",
+  author = person("S.", "Mirjalili"),
+  journal = "Applied Intelligence",
+  year = "2015",
+  volume = "43",
+  pages = "150--161",
+  doi = "10.1007/s10489-014-0645-7"
+)
+
+bibentry(
+  bibtype = "Article",
+  title = "A novel approach to training feed-forward multi-layer perceptrons with recently proposed secretary bird optimization algorithm",
+  author = c(
+    person("Burak", "Dilber"),
+    person("A. Firat", "Ozdemir")
+  ),
+  journal = "Neural Computing and Applications",
+  year = "2026",
+  volume = "38",
+  number = "5",
+  doi = "10.1007/s00521-026-11874-x"
+)

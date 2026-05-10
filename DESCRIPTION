@@ -1,0 +1,17 @@
+Package: metANN
+Title: Metaheuristic and Gradient-Based Algorithms for Artificial Neural Network Training
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "Burak",
+           family = "Dilber",
+           email = "burakdilber91@gmail.com",
+           role = c("aut", "cre", "cph")),
+    person(given = "A. Fırat",
+           family = "Özdemir",
+           role = c("aut", "ths"))
+    )
+Description: Provides an extensible framework for training artificial neural networks using metaheuristic, gradient-based, and hybrid optimization algorithms. The package supports feed-forward multilayer perceptrons for regression and classification tasks, customizable activation functions, loss functions, performance metrics, preprocessing options, and general-purpose continuous optimization.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3

@@ -1,0 +1,758 @@
+
+<!-- README.md is generated from README.Rmd. Please edit README.Rmd -->
+
+# metANN
+
+`metANN` is an R package for training feed-forward artificial neural
+networks using metaheuristic and gradient-based optimization algorithms.
+It also provides a general-purpose continuous optimization interface for
+benchmark functions and other numerical optimization problems.
+
+The package supports:
+
+- general-purpose continuous optimization,
+- feed-forward multilayer perceptron training,
+- regression,
+- binary classification,
+- multi-class classification,
+- metaheuristic optimization,
+- gradient-based optimization.
+
+## Main Features
+
+`metANN` currently supports the following optimizers:
+
+``` r
+available_optimizers()
+```
+
+Currently available optimizers are:
+
+``` r
+"pso"  "de"   "ga"   "abc"  "gwo"  "woa"  "tlbo" "sboa" "sgd"  "adam"
+```
+
+Metaheuristic optimizers:
+
+``` r
+available_metaheuristics()
+```
+
+Gradient-based optimizers:
+
+``` r
+available_gradient_optimizers()
+```
+
+## Installation
+
+You can install the development version of `metANN` from GitHub using:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("YOUR_GITHUB_USERNAME/metANN")
+```
+
+After installation, load the package:
+
+``` r
+library(metANN)
+```
+
+Replace `YOUR_GITHUB_USERNAME` with your GitHub username after uploading
+the package to GitHub.
+
+## General-Purpose Optimization
+
+The `met_optimize()` function can be used for continuous optimization
+problems.
+
+Metaheuristic optimizers require only an objective function.
+
+Gradient-based optimizers require both an objective function and its
+gradient.
+
+## Example 1: Sphere Function with SBOA
+
+``` r
+sphere <- function(x) {
+  sum(x^2)
+}
+
+result_sboa <- met_optimize(
+  fn = sphere,
+  optimizer = optimizer_sboa(
+    pop_size = 30,
+    max_iter = 100
+  ),
+  lower = rep(-10, 10),
+  upper = rep(10, 10),
+  seed = 123,
+  verbose = FALSE
+)
+
+result_sboa
+summary(result_sboa)
+coef(result_sboa)
+
+plot(result_sboa)
+plot(result_sboa, log = TRUE)
+```
+
+## Example 2: Rastrigin Function with SBOA
+
+``` r
+rastrigin <- function(x) {
+  10 * length(x) + sum(x^2 - 10 * cos(2 * pi * x))
+}
+
+result_rastrigin <- met_optimize(
+  fn = rastrigin,
+  optimizer = optimizer_sboa(
+    pop_size = 40,
+    max_iter = 150
+  ),
+  lower = rep(-5.12, 5),
+  upper = rep(5.12, 5),
+  seed = 123,
+  verbose = FALSE
+)
+
+result_rastrigin
+summary(result_rastrigin)
+
+plot(result_rastrigin)
+plot(result_rastrigin, log = TRUE)
+```
+
+## Gradient-Based General Optimization
+
+Gradient-based optimizers such as SGD and Adam require a gradient
+function supplied via the `gr` argument.
+
+## Example 3: Sphere Function with Adam
+
+``` r
+sphere <- function(x) {
+  sum(x^2)
+}
+
+grad_sphere <- function(x) {
+  2 * x
+}
+
+result_adam <- met_optimize(
+  fn = sphere,
+  gr = grad_sphere,
+  optimizer = optimizer_adam(
+    learning_rate = 0.1,
+    epochs = 100
+  ),
+  lower = rep(-5, 5),
+  upper = rep(5, 5),
+  initial = rep(4, 5),
+  seed = 123,
+  verbose = FALSE
+)
+
+result_adam
+summary(result_adam)
+coef(result_adam)
+
+plot(result_adam)
+plot(result_adam, log = TRUE)
+```
+
+## Example 4: Rastrigin Function with Adam
+
+``` r
+rastrigin <- function(x) {
+  10 * length(x) + sum(x^2 - 10 * cos(2 * pi * x))
+}
+
+grad_rastrigin <- function(x) {
+  2 * x + 20 * pi * sin(2 * pi * x)
+}
+
+result_adam_rastrigin <- met_optimize(
+  fn = rastrigin,
+  gr = grad_rastrigin,
+  optimizer = optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 500
+  ),
+  lower = rep(-5.12, 5),
+  upper = rep(5.12, 5),
+  initial = rep(3, 5),
+  seed = 123,
+  verbose = FALSE
+)
+
+result_adam_rastrigin
+summary(result_adam_rastrigin)
+
+plot(result_adam_rastrigin)
+```
+
+Since the Rastrigin function is multimodal, gradient-based optimizers
+may converge to local minima depending on the initial point and learning
+rate.
+
+## Feed-Forward Neural Network Training
+
+The `met_mlp()` function is a convenient wrapper for training
+feed-forward multilayer perceptrons.
+
+The task can be selected manually using:
+
+``` r
+task = "regression"
+task = "classification"
+```
+
+or detected automatically using:
+
+``` r
+task = "auto"
+```
+
+When `task = "auto"`:
+
+- numeric response variables are treated as regression,
+- factor, character, or logical response variables are treated as
+  classification.
+
+## Example 5: MLP Regression with SBOA
+
+``` r
+fit_reg_sboa <- met_mlp(
+  formula = Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,
+  data = iris,
+  hidden_layers = c(5),
+  activation = "relu",
+  optimizer = optimizer_sboa(
+    pop_size = 20,
+    max_iter = 30
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_reg_sboa
+summary(fit_reg_sboa)
+
+evaluate(fit_reg_sboa, newdata = iris)
+
+predict(fit_reg_sboa, iris[1:5, ], type = "response")
+
+plot(fit_reg_sboa)
+```
+
+## Example 6: MLP Regression with Adam
+
+``` r
+fit_reg_adam <- met_mlp(
+  formula = Petal.Width ~ Sepal.Length + Sepal.Width + Petal.Length,
+  data = iris,
+  hidden_layers = c(5),
+  activation = "relu",
+  optimizer = optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 100,
+    batch_size = 32
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_reg_adam
+summary(fit_reg_adam)
+
+evaluate(fit_reg_adam, newdata = iris)
+
+predict(fit_reg_adam, iris[1:5, ], type = "response")
+
+plot(fit_reg_adam)
+```
+
+## Binary Classification
+
+For binary classification, `metANN` uses a one-unit output layer with
+sigmoid activation by default.
+
+If `loss = NULL`, the default loss is binary cross-entropy.
+
+## Example 7: Binary Classification with SBOA
+
+``` r
+iris_bin <- iris
+
+iris_bin$IsSetosa <- factor(
+  ifelse(iris_bin$Species == "setosa", "setosa", "other")
+)
+
+fit_bin_sboa <- met_mlp(
+  formula = IsSetosa ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+  data = iris_bin,
+  hidden_layers = c(5),
+  activation = "relu",
+  optimizer = optimizer_sboa(
+    pop_size = 20,
+    max_iter = 30
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_bin_sboa
+summary(fit_bin_sboa)
+
+evaluate(fit_bin_sboa, newdata = iris_bin)
+
+predict(fit_bin_sboa, iris_bin[1:5, ], type = "class")
+
+predict(fit_bin_sboa, iris_bin[1:5, ], type = "prob")
+
+plot(fit_bin_sboa)
+```
+
+## Example 8: Binary Classification with Adam
+
+``` r
+iris_bin <- iris
+
+iris_bin$IsSetosa <- factor(
+  ifelse(iris_bin$Species == "setosa", "setosa", "other")
+)
+
+fit_bin_adam <- met_mlp(
+  formula = IsSetosa ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+  data = iris_bin,
+  hidden_layers = c(5),
+  activation = "relu",
+  optimizer = optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 100,
+    batch_size = 32
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_bin_adam
+summary(fit_bin_adam)
+
+evaluate(fit_bin_adam, newdata = iris_bin)
+
+predict(fit_bin_adam, iris_bin[1:5, ], type = "class")
+
+predict(fit_bin_adam, iris_bin[1:5, ], type = "prob")
+
+plot(fit_bin_adam)
+```
+
+For binary classification, `type = "prob"` returns a two-column
+probability matrix.
+
+## Multi-Class Classification
+
+For multi-class classification, `metANN` uses a softmax output layer by
+default.
+
+If `loss = NULL`, the default loss is categorical cross-entropy.
+
+## Example 9: Multi-Class Classification with SBOA
+
+``` r
+fit_multi_sboa <- met_mlp(
+  formula = Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+  data = iris,
+  hidden_layers = c(6),
+  activation = "relu",
+  optimizer = optimizer_sboa(
+    pop_size = 25,
+    max_iter = 40
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_multi_sboa
+summary(fit_multi_sboa)
+
+evaluate(fit_multi_sboa, newdata = iris)
+
+predict(fit_multi_sboa, iris[1:5, ], type = "class")
+
+predict(fit_multi_sboa, iris[1:5, ], type = "prob")
+
+plot(fit_multi_sboa)
+```
+
+## Example 10: Multi-Class Classification with Adam
+
+``` r
+fit_multi_adam <- met_mlp(
+  formula = Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+  data = iris,
+  hidden_layers = c(6),
+  activation = "relu",
+  optimizer = optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 200,
+    batch_size = 32
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_multi_adam
+summary(fit_multi_adam)
+
+evaluate(fit_multi_adam, newdata = iris)
+
+predict(fit_multi_adam, iris[1:5, ], type = "class")
+
+predict(fit_multi_adam, iris[1:5, ], type = "prob")
+
+plot(fit_multi_adam)
+```
+
+For multi-class classification, `type = "prob"` returns a probability
+matrix with one column per class.
+
+## Prediction Types
+
+For regression models:
+
+``` r
+predict(fit_reg_adam, newdata = iris[1:5, ], type = "response")
+```
+
+For classification models:
+
+``` r
+predict(fit_bin_adam, newdata = iris_bin[1:5, ], type = "class")
+
+predict(fit_bin_adam, newdata = iris_bin[1:5, ], type = "prob")
+
+predict(fit_bin_adam, newdata = iris_bin[1:5, ], type = "response")
+```
+
+For classification models:
+
+- `type = "class"` returns predicted class labels,
+- `type = "prob"` returns predicted class probabilities,
+- `type = "response"` returns class labels by default.
+
+## Network Visualization
+
+The `plot_network()` function visualizes the architecture of a fitted
+`metANN` model or an MLP architecture object.
+
+``` r
+plot_network(fit_multi_adam)
+```
+
+It displays input, hidden, and output layers, including the number of
+neurons and activation functions.
+
+You can also plot an architecture object directly:
+
+``` r
+arch <- mlp_architecture(
+  input_dim = 4,
+  layers = list(
+    dense_layer(6, activation = "relu"),
+    dense_layer(3, activation = "softmax")
+  )
+)
+
+plot_network(arch)
+```
+
+## Model Evaluation
+
+The `evaluate()` function computes performance metrics on new data.
+
+For regression models:
+
+``` r
+evaluate(fit_reg_adam, newdata = iris)
+
+evaluate(
+  fit_reg_adam,
+  newdata = iris,
+  metrics = c("rmse", "mae", "r2")
+)
+```
+
+For binary classification models:
+
+``` r
+evaluate(fit_bin_adam, newdata = iris_bin)
+
+evaluate(
+  fit_bin_adam,
+  newdata = iris_bin,
+  metrics = c("accuracy", "precision", "recall", "f1")
+)
+```
+
+For multi-class classification models:
+
+``` r
+evaluate(fit_multi_adam, newdata = iris)
+
+evaluate(
+  fit_multi_adam,
+  newdata = iris,
+  metrics = c("accuracy", "precision", "recall", "f1")
+)
+```
+
+## x-y Interface
+
+In addition to the formula-data interface, `metANN` also supports an x-y
+interface.
+
+## Example 11: Regression with x-y Interface
+
+``` r
+x_reg <- as.matrix(
+  iris[, c("Sepal.Length", "Sepal.Width", "Petal.Length")]
+)
+
+y_reg <- iris$Petal.Width
+
+fit_xy_reg <- met_mlp(
+  x = x_reg,
+  y = y_reg,
+  hidden_layers = c(5),
+  optimizer = optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 100,
+    batch_size = 32
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_xy_reg
+summary(fit_xy_reg)
+
+evaluate(
+  fit_xy_reg,
+  newdata = x_reg,
+  y_true = y_reg
+)
+```
+
+## Example 12: Binary Classification with x-y Interface
+
+``` r
+iris_bin <- iris
+
+iris_bin$IsSetosa <- factor(
+  ifelse(iris_bin$Species == "setosa", "setosa", "other")
+)
+
+x_bin <- as.matrix(
+  iris_bin[, c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")]
+)
+
+y_bin <- iris_bin$IsSetosa
+
+fit_xy_bin <- met_mlp(
+  x = x_bin,
+  y = y_bin,
+  hidden_layers = c(5),
+  optimizer = optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 100,
+    batch_size = 32
+  ),
+  seed = 123,
+  verbose = FALSE
+)
+
+fit_xy_bin
+summary(fit_xy_bin)
+
+evaluate(
+  fit_xy_bin,
+  newdata = x_bin,
+  y_true = y_bin
+)
+```
+
+## Optimizer Information
+
+The `optimizer_info()` function provides a short summary of an
+optimizer.
+
+``` r
+optimizer_info("sboa")
+
+optimizer_info(
+  optimizer_adam(
+    learning_rate = 0.01,
+    epochs = 200,
+    batch_size = 32
+  )
+)
+```
+
+Example output includes:
+
+- optimizer name,
+- full optimizer name,
+- optimizer type,
+- whether it requires gradients,
+- supported interfaces,
+- main parameters,
+- current parameter values.
+
+## Available Activation Functions
+
+``` r
+available_activations()
+```
+
+Currently available activation functions are:
+
+``` r
+"linear" "sigmoid" "tanh" "relu" "leaky_relu" "softmax"
+```
+
+## Available Loss Functions
+
+``` r
+available_losses()
+```
+
+Currently available loss functions are:
+
+``` r
+"mse" "mae" "huber" "log_cosh" "binary_crossentropy" "crossentropy"
+```
+
+## Available Metrics
+
+``` r
+available_metrics()
+```
+
+Currently available metrics are:
+
+``` r
+"mse" "rmse" "mae" "r2" "accuracy" "precision" "recall" "f1"
+```
+
+## Supported Tasks
+
+The current development version supports:
+
+| Task | Metaheuristic optimizers | SGD | Adam |
+|----|---:|---:|---:|
+| General-purpose optimization without gradient | Yes | No | No |
+| General-purpose optimization with gradient | No | Yes | Yes |
+| MLP regression | Yes | Yes | Yes |
+| Binary classification | Yes | Yes | Yes |
+| Multi-class classification | Yes | Yes | Yes |
+
+## Notes
+
+In the current development version:
+
+- metaheuristic optimizers can train MLPs without requiring gradients,
+- SGD and Adam can optimize differentiable benchmark functions when a
+  gradient function is supplied,
+- SGD and Adam can train MLPs for regression, binary classification, and
+  multi-class classification,
+- binary classification uses sigmoid output and binary cross-entropy by
+  default,
+- multi-class classification uses softmax output and cross-entropy by
+  default,
+- classification metrics are computed using macro-averaged precision,
+  recall, and F1.
+
+## References
+
+The optimization algorithms and neural network components implemented in
+`metANN` are based on the following key references:
+
+- Kennedy, J., and Eberhart, R. (1995). Particle Swarm Optimization.
+  *Proceedings of ICNN’95 - International Conference on Neural
+  Networks*, 4, 1942–1948.
+- Storn, R., and Price, K. (1997). Differential Evolution – A Simple and
+  Efficient Heuristic for Global Optimization over Continuous Spaces.
+  *Journal of Global Optimization*, 11, 341–359.
+- Goldberg, D. E. (1989). *Genetic Algorithms in Search, Optimization,
+  and Machine Learning*. Addison-Wesley.
+- Karaboga, D., and Basturk, B. (2007). A Powerful and Efficient
+  Algorithm for Numerical Function Optimization: Artificial Bee Colony
+  (ABC) Algorithm. *Journal of Global Optimization*, 39, 459–471.
+- Mirjalili, S., Mirjalili, S. M., and Lewis, A. (2014). Grey Wolf
+  Optimizer. *Advances in Engineering Software*, 69, 46–61.
+- Mirjalili, S., and Lewis, A. (2016). The Whale Optimization Algorithm.
+  *Advances in Engineering Software*, 95, 51–67.
+- Rao, R. V., Savsani, V. J., and Vakharia, D. P. (2011).
+  Teaching-Learning-Based Optimization: A Novel Method for Constrained
+  Mechanical Design Optimization Problems. *Computer-Aided Design*, 43,
+  303–315.
+- Fu, Y., Liu, D., Chen, J., and He, L. (2024). Secretary Bird
+  Optimization Algorithm: A New Metaheuristic for Solving Global
+  Optimization Problems. *Artificial Intelligence Review*, 57, 123.
+- Kingma, D. P., and Ba, J. (2015). Adam: A Method for Stochastic
+  Optimization. *International Conference on Learning Representations*.
+- Nair, V., and Hinton, G. E. (2010). Rectified Linear Units Improve
+  Restricted Boltzmann Machines. *Proceedings of the 27th International
+  Conference on Machine Learning*, 807–814.
+- Bridle, J. S. (1990). Probabilistic Interpretation of Feedforward
+  Classification Network Outputs, with Relationships to Statistical
+  Pattern Recognition. In *Neurocomputing: Algorithms, Architectures and
+  Applications*, 227–236.
+
+### Metaheuristic-Based Neural Network Training
+
+The neural network training functionality in `metANN` is related to the
+literature on metaheuristic-based training of feed-forward neural
+networks. Representative studies include:
+
+- Montana, D. J., and Davis, L. (1989). Training Feedforward Neural
+  Networks Using Genetic Algorithms. *Proceedings of the 11th
+  International Joint Conference on Artificial Intelligence*, 762–767.
+
+- Ilonen, J., Kamarainen, J.-K., and Lampinen, J. (2003). Differential
+  Evolution Training Algorithm for Feed-Forward Neural Networks. *Neural
+  Processing Letters*, 17, 93–105. <doi:10.1023/A:1022995128597>
+
+- Karaboga, D., and Ozturk, C. (2009). Neural Networks Training by
+  Artificial Bee Colony Algorithm on Pattern Classification. *Neural
+  Network World*, 19(3), 279–292.
+
+- Mirjalili, S. (2015). How Effective is the Grey Wolf Optimizer in
+  Training Multi-Layer Perceptrons. *Applied Intelligence*, 43, 150–161.
+  <doi:10.1007/s10489-014-0645-7>
+
+- Dilber, B., and Özdemir, A. F. (2026). A novel approach to training
+  feed-forward multi-layer perceptrons with recently proposed secretary
+  bird optimization algorithm. *Neural Computing and Applications*,
+  38(5). <doi:10.1007/s00521-026-11874-x>
+
+## Citation
+
+If you use `metANN` in academic work, please cite the package and the
+related optimization algorithms where appropriate.
+
+## Authors
+
+`metANN` is developed and maintained by:
+
+- Burak Dilber
+- A. Fırat Özdemir
+
+## License
+
+This package is released under the MIT license.
