@@ -50,7 +50,7 @@ You can install the development version of `metANN` from GitHub using:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("YOUR_GITHUB_USERNAME/metANN")
+remotes::install_github("burakdilber/metANN")
 ```
 
 After installation, load the package:
