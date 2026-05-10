@@ -9,7 +9,7 @@ bibentry(
   ),
   year = "2026",
   note = paste("R package version", packageDescription("metANN")$Version),
-  url = "https://github.com/YOUR_GITHUB_USERNAME/metANN"
+  url = "https://github.com/burakdilber/metANN"
 )
 
 citHeader("References for implemented optimization algorithms and neural network components:")
