@@ -14,3 +14,6 @@ This is a resubmission. In this version I have:
 
 * fixed the CITATION file so that it can be read when the package is not installed.
 * added method references to the Description field in the requested format.
+* replaced the arXiv URL for Kingma and Ba (2015) with the arXiv DOI format requested by CRAN.
+
+The possibly misspelled words reported by the incoming checks are technical terms or author names.
