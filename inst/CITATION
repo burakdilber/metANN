@@ -2,13 +2,13 @@ citHeader("To cite metANN in publications, please use:")
 
 bibentry(
   bibtype = "Manual",
-  title = "metANN: Metaheuristic and Gradient-Based Training of Artificial Neural Networks",
+  title = "metANN: Metaheuristic and Gradient-Based Optimization for Neural Network Training and Continuous Problems",
   author = c(
     person("Burak", "Dilber"),
     person("A. Firat", "Ozdemir")
   ),
   year = "2026",
-  note = paste("R package version", packageDescription("metANN")$Version),
+  note = "R package version 0.1.0",
   url = "https://github.com/burakdilber/metANN"
 )
 
